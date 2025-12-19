@@ -1,0 +1,29 @@
+[build-system]
+requires = ["setuptools>=42", "wheel"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "ds-cli"
+version = "1.0.2"
+description = "DeepSeek CLI - A command-line interface for DeepSeek API"
+readme = "README.md"
+authors = [
+  { name = "DeepSeek Team", email = "support@deepseek.com" },
+]
+requires-python = ">=3.8"
+dependencies = [
+  "openai>=1.42.0,<2.0.0",
+]
+classifiers = [
+  "Programming Language :: Python :: 3",
+  "License :: OSI Approved :: MIT License",
+  "Operating System :: OS Independent",
+]
+
+[project.scripts]
+ds = "ds.__main__:main"
+
+[project.urls]
+Homepage = "https://github.com/deepseek-ai/deepseek-cli"
+Issues = "https://github.com/deepseek-ai/deepseek-cli/issues"
+Documentation = "https://github.com/deepseek-ai/deepseek-cli/blob/main/README.md"
