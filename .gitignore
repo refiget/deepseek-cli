@@ -133,3 +133,4 @@ chat_history.txt
 *.env
 .env.local
 .env.*.local
+chat_history.jsonl
