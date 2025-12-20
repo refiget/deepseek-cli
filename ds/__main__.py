@@ -3,10 +3,16 @@ import argparse
 import sys
 import os
 from pathlib import Path
-from .version import __version__
-from .chat import chat
-from .config import ENABLE_COLOR
-from .utils import format_error_message
+
+# Allow running as a standalone script (e.g., `python ds/__main__.py`)
+if __package__ in (None, ""):
+    sys.path.append(str(Path(__file__).resolve().parent.parent))
+    __package__ = "ds"
+
+from ds.version import __version__
+from ds.chat import chat
+from ds.config import ENABLE_COLOR
+from ds.utils import format_error_message
 
 
 def main():

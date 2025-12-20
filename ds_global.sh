@@ -2,7 +2,7 @@
 # DeepSeek CLI 全局包装脚本
 
 # 默认虚拟环境路径
-DEFAULT_VENV="/Users/mac/venvs/deepseek-cli"
+DEFAULT_VENV="/home/bob/venvs/deepseek-cli"
 
 # 配置文件路径
 CONFIG_FILE="$HOME/.config/deepseek-cli/config.env"
