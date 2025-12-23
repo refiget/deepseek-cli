@@ -6,7 +6,8 @@ from pathlib import Path
 from typing import List, Dict, Any
 import openai
 from .config import API_KEY, BASE_URL, MODEL, LOG_FILE, ENABLE_COLOR, SPINNER, STREAM, COLOR_SCHEME, NON_CODE_STYLE
-from .utils import render_content, render_incremental, format_error_message, format_info_message, strip_ansi
+from .utils import format_error_message, format_info_message
+from .highlighter import render_content, render_incremental, strip_ansi
 
 
 class DeepSeekChat:
@@ -153,23 +154,13 @@ class DeepSeekChat:
                                 first_chunk = False
                             content_chunk = delta.content
                             response_text += content_chunk
-                            buffer += content_chunk
-                            
-                            # Check if we have complete blocks to render
-                            if "```" in buffer:
-                                # Render complete blocks
-                                rendered, buffer = render_incremental("", buffer, ENABLE_COLOR, COLOR_SCHEME, NON_CODE_STYLE)
-                                print(rendered, end="", flush=True)
                 # Ensure loading indicator stops even if no content is streamed
                 stop_loading()
                 
-                # Render any remaining content in buffer
-                if buffer:
-                    rendered = render_content(buffer, ENABLE_COLOR, COLOR_SCHEME, NON_CODE_STYLE)
-                    print(rendered, end="", flush=True)
-                
-                # Add a newline at the end of streaming output to ensure prompt appears on new line
-                print()
+                # Render the response with syntax highlighting
+                from .utils import render_content
+                rendered_response = render_content(response_text, enable_color=ENABLE_COLOR, theme_name=COLOR_SCHEME, non_code_style=NON_CODE_STYLE)
+                return rendered_response
             else:
                 # Get content from non-streaming response
                 if hasattr(response, 'choices') and response.choices:
@@ -178,26 +169,19 @@ class DeepSeekChat:
                     # Stop loading once we have the full response
                     stop_loading()
                     
-                    # Check if content contains code blocks
-                    if "```" in response_text:
-                        # For content with code blocks, use render_content for proper highlighting
-                        print(render_content(response_text, ENABLE_COLOR, COLOR_SCHEME, NON_CODE_STYLE))
-                    else:
-                        # For content without code blocks, apply non-code style if enabled
-                        if ENABLE_COLOR and NON_CODE_STYLE != "plain":
-                            from .utils import NON_CODE_STYLES
-                            style_code = NON_CODE_STYLES.get(NON_CODE_STYLE, "")
-                            from .utils import COLORS
-                            print(f"{style_code}{response_text}{COLORS['reset']}")
-                        else:
-                            print(response_text)
+                    # Just return the response text, don't print it here
+                    # The caller will handle printing
                 else:
                     stop_loading()
 
-            # Log chat history
-            self.log_chat(messages, response_text)
+            # Render the response with syntax highlighting
+            from .utils import render_content
+            rendered_response = render_content(response_text, enable_color=ENABLE_COLOR, theme_name=COLOR_SCHEME, non_code_style=NON_CODE_STYLE)
             
-            return response_text
+            # Log chat history
+            self.log_chat(messages, rendered_response)
+            
+            return rendered_response
         
         except openai.APIError as e:
             raise RuntimeError(f"DeepSeek API error occurred: {e}") from e

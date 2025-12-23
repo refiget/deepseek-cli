@@ -34,7 +34,6 @@ def main():
     parser.add_argument("-st", "--stream", action="store_true", help="Enable streaming output")
     parser.add_argument("--theme", choices=["dracula", "monokai", "default"], help="Code highlighting theme")
     parser.add_argument("--non-code-style", choices=["plain", "dim", "highlight"], help="Style for non-code text")
-    parser.add_argument("-e", "--venv", help="Specify Python virtual environment path")
     parser.add_argument("query", nargs="+", help="Query for DeepSeek API")
     
     # Parse arguments
@@ -42,7 +41,6 @@ def main():
     
     # Handle configuration options that affect environment variables
     config_changes = {
-        "DEEPSEEK_VENV_PATH": args.venv,
         "DS_NO_COLOR": "1" if args.no_color else None,
         "DS_NO_STREAM": "1" if args.no_stream else None,
         "DS_STREAM": "1" if args.stream else None,
@@ -82,7 +80,8 @@ def main():
     
     # Execute chat - no need to pass stream explicitly, it will use config
     try:
-        chat(query, mode, language)
+        response = chat(query, mode, language)
+        print(response)
     except Exception as e:
         error_msg = format_error_message("Error", str(e), ENABLE_COLOR)
         print(error_msg, file=sys.stderr)

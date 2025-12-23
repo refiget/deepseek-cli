@@ -1,30 +1,43 @@
+#!/usr/bin/env python3
+"""
+Test script to verify color rendering is working correctly.
+"""
 import sys
+import os
+
+# Add the project root to Python path
+sys.path.insert(0, os.path.dirname(os.path.abspath(__file__)))
+
+from ds.config import ENABLE_COLOR, COLOR_SCHEME, NON_CODE_STYLE
 from ds.utils import render_content, strip_ansi
 
-# Test content with both code and non-code parts
-test_content = '''Here's a simple Python function to add two numbers:
+# Test content with code and non-code parts
+test_content = '''这是一段普通文本。
 
 ```python
-def add_numbers(a, b):
-    """Return the sum of two numbers."""
-    return a + b
+def hello():
+    print("Hello, world!")
+    return 42
 ```
 
-Usage example:
-```python
-result = add_numbers(5, 3)
-print(result)  # Output: 8
-```
-'''
+这是另一部分普通文本。'''
 
-# Render content with color
-rendered_content = render_content(test_content, enable_color=True)
+print(f"ENABLE_COLOR: {ENABLE_COLOR}")
+print(f"COLOR_SCHEME: {COLOR_SCHEME}")
+print(f"NON_CODE_STYLE: {NON_CODE_STYLE}")
+print("-" * 50)
 
-print("Rendered content (with ANSI codes):")
-print(repr(rendered_content))
-print()
-print("Rendered content (displayed):")
-print(rendered_content)
-print()
-print("Content without ANSI codes:")
-print(strip_ansi(rendered_content))
+# Test rendering with color enabled
+print("Rendering with color enabled:")
+rendered = render_content(test_content, enable_color=True, theme_name='dracula', non_code_style='plain')
+print(f"Rendered output length: {len(rendered)}")
+print(f"Contains ANSI codes: {len(strip_ansi(rendered)) != len(rendered)}")
+print(rendered)
+print("-" * 50)
+
+# Test rendering with color disabled
+print("Rendering with color disabled:")
+rendered = render_content(test_content, enable_color=False, theme_name='dracula', non_code_style='plain')
+print(f"Rendered output length: {len(rendered)}")
+print(f"Contains ANSI codes: {len(strip_ansi(rendered)) != len(rendered)}")
+print(rendered)

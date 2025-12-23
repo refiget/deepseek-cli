@@ -2,6 +2,7 @@ import os
 import sys
 from pathlib import Path
 
+
 def _default_log_file() -> Path:
     """
     Determine a writable default log file location.
@@ -19,11 +20,10 @@ def _default_log_file() -> Path:
 DEFAULT_BASE_URL = "https://api.deepseek.com"
 DEFAULT_MODEL = "deepseek-chat"
 DEFAULT_LOG_FILE = _default_log_file()
-DEFAULT_ENABLE_COLOR = sys.stdout.isatty()
+DEFAULT_ENABLE_COLOR = True  # Enable color by default
 DEFAULT_ENABLE_SPINNER = sys.stdout.isatty()
 DEFAULT_STREAM = True  # Enable streaming by default
 DEFAULT_VERSION = "1.0.2"
-DEFAULT_VENV_PATH = None  # Default to system Python
 
 # Color scheme configuration
 # Available schemes: 'dracula', 'monokai', 'default'
@@ -40,7 +40,6 @@ LOG_FILE = None
 ENABLE_COLOR = None
 SPINNER = None
 STREAM = None
-VENV_PATH = None
 COLOR_SCHEME = None
 NON_CODE_STYLE = None
 
@@ -52,7 +51,7 @@ def load_config(env=None):
     Args:
         env (dict, optional): Environment variables to use for testing purposes.
     """
-    global API_KEY, BASE_URL, MODEL, LOG_FILE, ENABLE_COLOR, SPINNER, STREAM, VENV_PATH, COLOR_SCHEME, NON_CODE_STYLE
+    global API_KEY, BASE_URL, MODEL, LOG_FILE, ENABLE_COLOR, SPINNER, STREAM, COLOR_SCHEME, NON_CODE_STYLE
     
     # Use provided environment or system environment
     env_vars = env if env is not None else os.environ
@@ -69,10 +68,6 @@ def load_config(env=None):
     # Load log file path from environment or use default
     log_path = env_vars.get("DEEPSEEK_LOG_FILE")
     LOG_FILE = Path(log_path).expanduser() if log_path else SCRIPT_DIR.parent / DEFAULT_LOG_FILE
-    
-    # Load venv path from environment
-    venv_path = env_vars.get("DEEPSEEK_VENV_PATH")
-    VENV_PATH = Path(venv_path).expanduser() if venv_path else DEFAULT_VENV_PATH
     
     # Check if color output is disabled via environment variable
     ENABLE_COLOR = not bool(env_vars.get("DS_NO_COLOR")) and DEFAULT_ENABLE_COLOR

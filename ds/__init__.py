@@ -17,11 +17,15 @@ from .version import __version__
 from .config import load_config
 from .chat import chat
 from .utils import render_content, strip_ansi
+from .nvim import ds_ask, ds_review_code, ds_generate_doctest
 
 __all__ = [
     "__version__",
     "load_config",
     "chat",
     "render_content",
-    "strip_ansi"
+    "strip_ansi",
+    "ds_ask",
+    "ds_review_code",
+    "ds_generate_doctest"
 ]

@@ -22,6 +22,7 @@ classifiers = [
 
 [project.scripts]
 ds = "ds.__main__:main"
+ds-nvim = "ds.nvim:main"
 
 [project.urls]
 Homepage = "https://github.com/deepseek-ai/deepseek-cli"
