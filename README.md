@@ -164,9 +164,9 @@ ds-nvim ask --concise "What is the capital of France?"
 
 ## Neovim Configuration with init.lua
 
-DeepSeek CLI provides a simple `init.lua` example file that allows you to integrate all DeepSeek features into your Neovim setup with just one line.
+DeepSeek CLI provides a flexible `init.lua` example file that allows you to integrate all DeepSeek features into your Neovim setup with just one line.
 
-### How to Use init.lua
+### Basic Configuration
 
 1. **Locate the init.lua file**
    - The example file is located at `init.lua` in the DeepSeek CLI installation directory
@@ -187,8 +187,32 @@ DeepSeek CLI provides a simple `init.lua` example file that allows you to integr
      require('deepseek')
      ```
 
-3. **Restart Neovim**
-   - Close and reopen Neovim to apply the changes
+### Modular Configuration (For Users with Structured Dotfiles)
+
+If your Neovim configuration uses a modular structure (like placing modules in `lua/user/` directory), follow these steps:
+
+1. **Create the necessary directory**
+   ```bash
+   mkdir -p ~/dotfiles/nvim/lua/user/
+   ```
+
+2. **Copy deepseek.lua to the user directory**
+   ```bash
+   cp /path/to/deepseek-cli/deepseek.lua ~/dotfiles/nvim/lua/user/
+   ```
+
+3. **Add the require statement in your init.lua**
+   ```lua
+   require("user.deepseek")
+   ```
+
+   This matches the structure shown in your configuration:
+   ```lua
+   require("user.core")
+   require("user.plugins")
+   require("user.keymaps")
+   require("user.deepseek")  -- 添加这一行
+   ```
 
 ### Available Key Mappings
 
@@ -203,9 +227,9 @@ After loading the configuration, the following key mappings will be automaticall
 ### Implementation Details
 
 - All DeepSeek-specific functionality is implemented in `deepseek.lua`
-- When you `require('deepseek')`, the setup function is automatically executed
-- Basic mappings (navigation, editing, splits) are still defined in `keymaps.lua`
-- The `init.lua` file serves as a simple entry point for the integration
+- When you `require('deepseek')` or `require('user.deepseek')`, the setup function is automatically executed
+- Basic mappings (navigation, editing, splits) are typically defined in your `keymaps.lua` file
+- The configuration supports both basic and modular Neovim setup structures
 
 ## License
 

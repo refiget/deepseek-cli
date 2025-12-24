@@ -1,9 +1,9 @@
 # Import ANSI color codes for message formatting
 from .highlighter import COLORS
 
-# For backward compatibility, import highlighter functions
+# Use Rust implementation if available, otherwise fallback to Python
+from .ds_highlighter import strip_ansi
 from .highlighter import (
-    strip_ansi,
     split_blocks,
     apply_syntax_highlighting,
     render_content,

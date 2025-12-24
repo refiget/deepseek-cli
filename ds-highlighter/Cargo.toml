@@ -1,0 +1,17 @@
+[package]
+name = "ds-highlighter"
+version = "0.1.0"
+edition = "2021"
+
+[lib]
+name = "_ds_highlighter"
+crate-type = ["cdylib"]
+
+[dependencies]
+regex = "1.12.2"
+lazy_static = "1.5.0"
+anyhow = "1.0.100"
+pyo3 = { version = "0.21.0", features = ["extension-module"] }
+
+[features]
+extension-module = []
