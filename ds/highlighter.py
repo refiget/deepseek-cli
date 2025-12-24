@@ -336,3 +336,20 @@ def render_incremental(content: str, buffer: str, enable_color: bool = True, the
     """
     highlighter = SyntaxHighlighter(theme_name, enable_color)
     return highlighter.render_incremental(content, buffer, non_code_style)
+
+
+# Aliases for backward compatibility with ds_highlighter.py
+def highlight(content: str, theme_name: str = "dracula", enable_color: bool = True) -> str:
+    """
+    Alias for render_content for backward compatibility.
+    """
+    highlighter = SyntaxHighlighter(theme_name, enable_color)
+    return highlighter.render_content(content)
+
+
+def highlight_code(code: str, theme_name: str = "dracula", enable_color: bool = True) -> str:
+    """
+    Alias for apply_syntax_highlighting for backward compatibility.
+    """
+    highlighter = SyntaxHighlighter(theme_name, enable_color)
+    return highlighter.apply_syntax_highlighting(code)
